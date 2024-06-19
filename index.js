@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -6,7 +6,10 @@ const selectResponse = require('./utils/responseSelector');
 const { getSettings, saveSettings } = require('./utils/settings');
 const logger = require('./utils/logger');
 
+// Load environment variables from .env file
 dotenv.config();
+
+const TOKEN = process.env.BOT_TOKEN;
 
 const client = new Client({
     intents: [
@@ -16,11 +19,10 @@ const client = new Client({
     ]
 });
 
-const TOKEN = process.env.BOT_TOKEN;
-
 client.commands = new Collection();
-const cooldowns = new Collection(); 
+const cooldowns = new Collection(); // Collection to store cooldowns
 
+// Function to recursively read command files and set category based on folder name
 const readCommands = (dir, category = '') => {
     const files = fs.readdirSync(dir);
     for (const file of files) {
@@ -42,13 +44,30 @@ const readCommands = (dir, category = '') => {
     }
 };
 
+// Load all command files recursively
 readCommands(path.join(__dirname, 'commands'));
 
 client.once('ready', () => {
     logger.info('NekoTomo is online!');
+
+    // Set bot's presence
+    client.user.setPresence({
+        activities: [
+            {
+                name: 'with yarn balls 🧶',
+                type: ActivityType.Playing,
+            },
+            {
+                name: 'with my hubby >w<',
+                type: ActivityType.Playing,
+            }
+        ],
+        status: 'online',
+    });
 });
 
 client.on('messageCreate', async message => {
+    // Ignore messages from bots and non-prefixed messages
     if (message.author.bot) return;
 
     const settings = getSettings(message.guild.id);
@@ -65,7 +84,7 @@ client.on('messageCreate', async message => {
             return;
         }
 
-        // ehh I'll add cooldown
+        // Cooldown logic
         if (!cooldowns.has(command.name)) {
             cooldowns.set(command.name, new Collection());
         }
@@ -93,6 +112,7 @@ client.on('messageCreate', async message => {
             message.reply('There was an error trying to execute that command.');
         }
     } else {
+        // Use the response selector for all non-command messages
         const response = selectResponse(message.content);
         if (response) {
             message.channel.send(response).catch(logger.error);
@@ -100,10 +120,12 @@ client.on('messageCreate', async message => {
     }
 });
 
+// Handle unhandled promise rejections
 process.on('unhandledRejection', error => {
     logger.error(`Unhandled promise rejection: ${error.stack || error}`);
 });
 
+// Handle uncaught exceptions
 process.on('uncaughtException', error => {
     logger.error(`Uncaught exception: ${error.stack || error}`);
 });

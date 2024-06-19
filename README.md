@@ -1,6 +1,6 @@
 # NekoTomo Bot 😺
 
-![NekoTomo Banner](https://i.imgur.com/t6TkgND.png)
+![NekoTomo Banner](https://i.pinimg.com/564x/e9/de/ec/e9deec7ff3325fa19263004b4b834087.jpg)
 
 ## About NekoTomo
 

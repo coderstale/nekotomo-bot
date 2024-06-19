@@ -65,7 +65,7 @@ client.on('messageCreate', async message => {
             return;
         }
 
-        // Cooldown logic
+        // ehh I'll add cooldown
         if (!cooldowns.has(command.name)) {
             cooldowns.set(command.name, new Collection());
         }

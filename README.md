@@ -83,4 +83,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 *Meow! Thank you for checking out NekoTomo! Enjoy a purr-fectly delightful experience!*
 
-![NekoTomo Footer]([https://i.imgur.com/t6TkgND.png](https://i.pinimg.com/736x/17/cd/ff/17cdff9f14995048c200986ed9632778.jpg))
+
